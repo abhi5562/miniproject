@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Summarizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            transition: margin 0.5s ease;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #loading {
+            display: none;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #loading-spinner {
+            display: none;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #summary-container {
+            margin-top: 20px;
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        #summary-container li {
+            margin-bottom: 10px;
+        }
+
+        button[type="button"] {
+            padding: 10px;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button[type="button"]:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Video Summarizer</h1>
+    <form method="post" action="/" onsubmit="showLoading(); return true;">
+        <label for="video_url">Enter YouTube Video URL:</label>
+        <input type="text" id="video_url" name="video_url" required>
+        <button type="submit">Summarize</button>
+    </form>
+
+    <!-- Loading text and spinner -->
+    <div id="loading">Loading...</div>
+    <div id="loading-spinner"></div>
+
+    <div id="summary-container">
+        {% if summarized_sentences %}
+            <h2>Summary:</h2>
+            <ul>
+                {% for sentence in summarized_sentences %}
+                    <li> {{ sentence }}</li>
+                {% endfor %}
+            </ul>
+            
+            <!-- Clear Button -->
+            <button type="button" onclick="clearSummary()">Clear</button>
+        {% endif %}
+    </div>
+
+    <script>
+        function showLoading() {
+            // Move the input box a bit higher
+            document.getElementById('video_url').style.marginBottom = '5px';
+
+            // Show loading text and spinner when the form is submitted
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('loading-spinner').style.display = 'block';
+        }
+
+        function clearSummary() {
+            // Clear the loading text and spinner
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('loading-spinner').style.display = 'none';
+            
+            // Reset the input box margin
+            document.getElementById('video_url').style.marginBottom = '15px';
+
+            // Clear the summary container
+            document.getElementById('summary-container').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
